@@ -43,12 +43,13 @@ class Timer {
    pad(value) {
     return String(value).padStart(2, '0');
   }
+
+  
+function updateCountdownTimer({ days, hours, mins, secs }) {
+  refs.CountdownTimer.textContent = `${days}:${hours}:${mins}:${secs}`;
+}
 }
 
 const timer = new Timer({
   onTick: updateCountdownTimer,
 });
-
-function updateCountdownTimer({ days, hours, mins, secs }) {
-  refs.CountdownTimer.textContent = `${days}:${hours}:${mins}:${secs}`;
-}
