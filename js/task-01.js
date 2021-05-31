@@ -1,9 +1,6 @@
 //Плагин это класс CountdownTimer, 
 //экземпляр которого создает новый таймер с настройками.
 
-const refs = { 
-  clockface: document.querySelector('.timer'),
-};
 
 new CountdownTimer({
   selector: '#timer-1',
@@ -49,9 +46,9 @@ class Timer {
 }
 
 const timer = new Timer({
-  onTick: updateClockface,
+  onTick: updateCountdownTimer,
 });
 
-function updateClockface({ days, hours, mins, secs }) {
-  refs.clockface.textContent = `${days}:${hours}:${mins}:${secs}`;
+function updateCountdownTimer({ days, hours, mins, secs }) {
+  refs.CountdownTimer.textContent = `${days}:${hours}:${mins}:${secs}`;
 }
