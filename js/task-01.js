@@ -1,36 +1,57 @@
 //Плагин это класс CountdownTimer, 
 //экземпляр которого создает новый таймер с настройками.
 
+const refs = { 
+  clockface: document.querySelector('.timer'),
+};
+
 new CountdownTimer({
   selector: '#timer-1',
-  targetDate: new Date('Jul 17, 2019'),
+  targetDate: new Date('Jul 17, 2021'),
 });
-//Для подсчета значений используй следующие готовые формулы, 
-//где time - разница между targetDate и текущей датой.
 
-/*
- * Оставшиеся дни: делим значение UTC на 1000 * 60 * 60 * 24, количество
- * миллисекунд в одном дне (миллисекунды * секунды * минуты * часы)
- */
-const days = Math.floor(time / (1000 * 60 * 60 * 24));
+class Timer {
+  constructor({ onTick }) {
+    this.intervalId = null;
+    this.onTick = onTick;
 
-/*
- * Оставшиеся часы: получаем остаток от предыдущего расчета с помощью оператора
- * остатка % и делим его на количество миллисекунд в одном часе
- * (1000 * 60 * 60 = миллисекунды * минуты * секунды)
- */
-const hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    this.init();
+  }
 
-/*
- * Оставшиеся минуты: получаем оставшиеся минуты и делим их на количество
- * миллисекунд в одной минуте (1000 * 60 = миллисекунды * секунды)
- */
-const mins = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+  init() {
+    const time = this.getTimeComponents(0);
+    this.onTick(time);
+  }
 
-/*
- * Оставшиеся секунды: получаем оставшиеся секунды и делим их на количество
- * миллисекунд в одной секунде (1000)
- */
-const secs = Math.floor((time % (1000 * 60)) / 1000);
+    //const startTime = Date.now();
+    //this.isActive = true;
 
+    this.intervalId = setInterval(() => {
+      const currentTime = Date.now();
+      const deltaTime = targetDate - currentTime;
+      const time = this.getTimeComponents(deltaTime);
 
+      this.onTick(time);
+    }, 1000);
+      
+  getTimeComponents(time) {
+    const days = this.pad( Math.floor(time / (1000 * 60 * 60 * 24)));
+    const hours = this.pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+    const mins = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+    const secs = this.pad(Math.floor((time % (1000 * 60)) / 1000));
+
+    return {days, hours, mins, secs };
+  }
+
+   pad(value) {
+    return String(value).padStart(2, '0');
+  }
+}
+
+const timer = new Timer({
+  onTick: updateClockface,
+});
+
+function updateClockface({ days, hours, mins, secs }) {
+  refs.clockface.textContent = `${days}:${hours}:${mins}:${secs}`;
+}
