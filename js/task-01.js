@@ -7,20 +7,19 @@ new CountdownTimer({
   targetDate: new Date('Jul 17, 2021'),
 });
 
-class Timer {
+class timer {
   constructor({ onTick }) {
     this.intervalId = null;
     this.onTick = onTick;
-
-    this.init();
+   // this.init();
   }
 
-  init() {
-    const time = this.getTimeComponents(0);
-    this.onTick(time);
-  }
+  // init() {
+  //   const time = this.getTimeComponents(0);
+  //   this.onTick(time);
+  // }
 
-    //const startTime = Date.now();
+  const currentTime = Date.now();
     //this.isActive = true;
 
     this.intervalId = setInterval(() => {
@@ -43,10 +42,9 @@ class Timer {
    pad(value) {
     return String(value).padStart(2, '0');
   }
-
   
 function updateCountdownTimer({ days, hours, mins, secs }) {
-  refs.CountdownTimer.textContent = `${days}:${hours}:${mins}:${secs}`;
+  CountdownTimer.textContent = `${days}:${hours}:${mins}:${secs}`;
 }
 }
 
